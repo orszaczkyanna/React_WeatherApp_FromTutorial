@@ -4,33 +4,80 @@ import { FiWind } from "react-icons/fi";
 import { GiSunrise, GiSunset } from "react-icons/gi";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
 
-const TempAndDetails = () => {
+const TempAndDetails = ({
+  weather: {
+    details,
+    icon,
+    temp,
+    temp_min,
+    temp_max,
+    sunrise,
+    sunset,
+    speed,
+    humidity,
+    feels_like,
+  },
+  units,
+}) => {
   const verticalDetails = [
-    { id: 1, Icon: FaThermometerEmpty, title: "Real Feel", value: "22°" },
-    { id: 2, Icon: BiSolidDropletHalf, title: "Humidity", value: "34%" },
-    { id: 3, Icon: FiWind, title: "Wind", value: "11 km/h" },
+    {
+      id: 1,
+      Icon: FaThermometerEmpty,
+      title: "Real Feel",
+      value: `${feels_like.toFixed()}°`,
+    },
+    {
+      id: 2,
+      Icon: BiSolidDropletHalf,
+      title: "Humidity",
+      value: `${humidity}%`,
+    },
+    {
+      id: 3,
+      Icon: FiWind,
+      title: "Wind",
+      value: `${speed.toFixed()} ${units === "metric" ? "m/s" : "mph"}`,
+      // value: "11 m/s",
+    },
   ];
 
   const horizontalDetails = [
-    { id: 1, Icon: GiSunrise, title: "Sunrise", value: "05:33 AM" },
-    { id: 2, Icon: GiSunset, title: "Sunset", value: "08:33 PM" },
-    { id: 3, Icon: MdKeyboardArrowUp, title: "High", value: "37°" },
-    { id: 4, Icon: MdKeyboardArrowDown, title: "Low", value: "7°" },
+    {
+      id: 1,
+      Icon: GiSunrise,
+      title: "Sunrise",
+      value: sunrise,
+    },
+    {
+      id: 2,
+      Icon: GiSunset,
+      title: "Sunset",
+      value: sunset,
+    },
+    {
+      id: 3,
+      Icon: MdKeyboardArrowUp,
+      title: "High",
+      value: `${temp_max.toFixed()}°`,
+    },
+    {
+      id: 4,
+      Icon: MdKeyboardArrowDown,
+      title: "Low",
+      value: `${temp_min.toFixed()}°`,
+    },
   ];
 
   return (
     <div>
       <div className="flex items-center justify-center py-6 text-xl text-cyan-300">
-        <p>Rain</p>
+        {/* <p>Rain</p> */}
+        <p>{details}</p>
       </div>
 
       <div className="flex flex-row items-center justify-between py-3">
-        <img
-          src="https://openweathermap.org/img/wn/01d@2x.png"
-          alt="weather icon"
-          className="w-20"
-        />
-        <p className="text-5xl">34°</p>
+        <img src={icon} alt="weather icon" className="w-20" />
+        <p className="text-5xl">{`${temp.toFixed()}°`}</p>
         <div className="flex flex-col space-y-3 items-start">
           {verticalDetails.map(({ id, Icon, title, value }) => (
             <div
