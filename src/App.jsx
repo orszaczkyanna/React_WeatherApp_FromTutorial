@@ -6,6 +6,9 @@ import TempAndDetails from "./components/TempAndDetails";
 import Forecast from "./components/Forecast";
 import getFormattedWeatherData from "./services/weatherService";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const App = () => {
   const [query, setQuery] = useState({ q: "london" });
   const [units, setUnits] = useState("metric");
@@ -16,10 +19,20 @@ const App = () => {
   }, [query, units]);
 
   const getWeather = async () => {
+    // React-Toastify
+    const cityName = query.q ? query.q : "current location";
+    toast.info(`Fetching weather data for ${capitalizeFirstLetter(cityName)}`);
+
+    // Fetch weather data
     await getFormattedWeatherData({ ...query, units }).then((data) => {
+      toast.success(`Fetched weather data for ${data.name}, ${data.country}`);
       setWeather(data);
       // console.log(data);
     });
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   // Make the background color dynamic based on the temperature
@@ -53,6 +66,7 @@ const App = () => {
           <Forecast title="daily forecast" data={weather.daily} />
         </>
       )}
+      <ToastContainer autoClose={2500} hideProgressBar={true} theme="colored" />
     </div>
   );
 };
